@@ -17,8 +17,18 @@
     .abilities-row .btn{ background: transparent; border: none; padding: 4px; color: inherit; }
     .page-indicator{ color: var(--muted); }
     footer.site-footer{ background: #071021; color: var(--muted); padding: 1rem 0; border-top: 1px solid rgba(255,255,255,0.03); }
-    @media (max-width: 576px){ .agent-circle{ width: 140px; height: 140px; } .card.p-5{ padding: 1.5rem !important; } .h3{ font-size: 1.25rem; } }
-    @media (min-width: 577px) and (max-width: 992px){ .agent-circle{ width: 160px; height: 160px; } }
+    .search-input { border-radius: 2rem 0 0 2rem; }
+    .search-btn { border-radius: 0 2rem 2rem 0; }
+    @media (max-width: 576px){
+      .agent-circle{ width: 140px; height: 140px; }
+      .card.p-5{ padding: 1.5rem !important; }
+      .h3{ font-size: 1.25rem; }
+      .search-input, .search-btn { border-radius: 0.75rem !important; }
+      .input-group-vertical-sm { display: flex; flex-direction: column; gap: .5rem; }
+    }
+    @media (min-width: 577px) and (max-width: 992px){
+      .agent-circle{ width: 160px; height: 160px; }
+    }
   </style>
 </head>
 <body>
@@ -35,11 +45,11 @@
 
   <div class="container my-3">
     <div class="row">
-      <div class="col-11">
-        <input type="text" placeholder="Agent name or UUID" class="form-control rounded-5" id="searchInput">
-      </div>
-      <div class="col-1">
-        <button class="btn btn-info rounded-5 w-100" onclick="searchAgent()">Go</button>
+      <div class="col-12">
+        <div class="input-group d-flex" id="searchGroupWrapper">
+          <input type="text" placeholder="Agent name or UUID" class="form-control rounded-5 search-input" id="searchInput" aria-label="Agent name or UUID">
+          <button class="btn btn-info rounded-5 search-btn px-4" onclick="searchAgent()" id="searchBtn" aria-label="Search">Go</button>
+        </div>
       </div>
     </div>
   </div>
@@ -100,14 +110,13 @@
     const contentArea = document.getElementById("contentArea");
     const pageText = document.getElementById("pageText");
     const searchInput = document.getElementById("searchInput");
+    const searchBtn = document.getElementById("searchBtn");
     let agents = [];
     let filteredAgents = null;
     let page = 1;
     let pageSize = 10;
 
-    function sourceArray() {
-      return filteredAgents || agents;
-    }
+    function sourceArray() { return filteredAgents || agents; }
 
     function prevPage(){
       if (page > 1) { page--; pageText.innerHTML = "Page " + page; contentArea.innerHTML = ""; renderPage(); }
